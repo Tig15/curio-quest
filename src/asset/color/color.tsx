@@ -12,4 +12,6 @@ export const COLORS = {
   info: '#1976D2',
   neutral: '#9E9E9E',
   logo_bg: '#dfc6ac',
+  dark_myst: '#4392a4',
+  light_myst: '#4aaebb',
 };
