@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import SliderComponent from '../../components/Slider';
 import {COLORS} from '../../asset/color/color';
 import Header from '../../components/Header';
+import {translate} from '../../translation';
 
 const Home: React.FC = ({navigation}: any) => {
   return (
@@ -11,14 +12,11 @@ const Home: React.FC = ({navigation}: any) => {
         height="6%"
         borderBottomLeftRadius={12}
         borderBottomRightRadius={12}>
-        <Text style={styles.welcomeText}>Welcome to CurioQuest!</Text>
+        <Text style={styles.welcomeText}>{translate('welcome')}</Text>
       </Header>
       <View style={{height: '30%'}}>
         <SliderComponent />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text>Sign Up</Text>
-      </TouchableOpacity>
     </View>
   );
 };

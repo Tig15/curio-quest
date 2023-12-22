@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import auth from '@react-native-firebase/auth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {COLORS} from '../../asset/color/color';
+import {translate} from '../../translation';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -112,7 +113,7 @@ const LoginForm = ({navigation}: any) => {
                 <TouchableOpacity
                   style={{marginTop: 12, alignSelf: 'center'}}
                   onPress={() => navigation.navigate('SignUp')}>
-                  <Text>Don't Have any Account? Sign Up</Text>
+                  <Text>{translate('not_account')}</Text>
                 </TouchableOpacity>
               </View>
             )}

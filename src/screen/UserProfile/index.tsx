@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {COLORS} from '../../asset/color/color';
+import {translate} from '../../translation';
 
 const UserProfile = ({navigation}: any) => {
   const [username, setUsername] = useState('');
@@ -35,8 +36,10 @@ const UserProfile = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
-      <Header height="10%">
-        <Text style={styles.profile}>{username}</Text>
+      <Header height="7%">
+        <Text style={styles.profile}>
+          {translate('adventure')} - {username}
+        </Text>
       </Header>
       <TouchableOpacity onPress={() => navigation.replace('LogIn')}>
         <Text>Logout</Text>
@@ -51,7 +54,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.light_border,
   },
   profile: {
-    // Style the username text here
+    color: COLORS.white,
+    fontSize: 17,
+    alignSelf: 'flex-start',
   },
 });
 
