@@ -7,10 +7,18 @@ import Header from '../../components/Header';
 const Home: React.FC = ({navigation}: any) => {
   return (
     <View style={styles.container}>
-      <Header>
+      <Header
+        height="6%"
+        borderBottomLeftRadius={12}
+        borderBottomRightRadius={12}>
         <Text style={styles.welcomeText}>Welcome to CurioQuest!</Text>
-        <SliderComponent />
       </Header>
+      <View style={{height: '30%'}}>
+        <SliderComponent />
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <Text>Sign Up</Text>
+      </TouchableOpacity>
     </View>
   );
 };

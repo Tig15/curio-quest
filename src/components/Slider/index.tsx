@@ -11,12 +11,15 @@ const SliderComponent: React.FC = () => {
     {id: '1', uri: require('../../asset/image/curioquest_logo.png')},
     {id: '2', uri: require('../../asset/image/mystery.png')},
     {id: '3', uri: require('../../asset/image/adventure.png')},
+    {id: '4', uri: require('../../asset/image/uncover.png')},
+    {id: '5', uri: require('../../asset/image/embark.png')},
+    {id: '6', uri: require('../../asset/image/curioquest-upscale.png')},
   ];
 
   const renderItem = ({item}: {item: {id: string; uri: any}}) => {
     return (
       <View style={styles.slide}>
-        <Image source={item.uri} style={styles.image} resizeMode="cover" />
+        <Image source={item.uri} style={styles.image} resizeMode="contain" />
       </View>
     );
   };
@@ -56,26 +59,26 @@ const styles = StyleSheet.create({
   },
   slide: {
     width: '100%',
-    height: '90%',
+    height: '75%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
     width: '100%',
-    height: '90%',
+    height: '100%',
     borderRadius: 12,
   },
   paginationContainer: {
-    paddingTop: 10,
+    paddingTop: 6,
     position: 'absolute',
-    top: 190,
+    top: 180,
   },
   paginationDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginHorizontal: 8,
-    backgroundColor: COLORS.white,
+    marginHorizontal: 2,
+    backgroundColor: COLORS.dark_border,
   },
 });
 

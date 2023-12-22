@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import auth from '@react-native-firebase/auth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {COLORS} from '../../asset/color/color';
+import firestore from '@react-native-firebase/firestore';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -37,10 +38,16 @@ const SignupForm = ({navigation}: any) => {
     username: string;
   }) => {
     try {
-      await auth().createUserWithEmailAndPassword(
+      const userCredential = await auth().createUserWithEmailAndPassword(
         values.email,
         values.password,
       );
+
+      await firestore().collection('users').doc(userCredential.user.uid).set({
+        email: values.email,
+        username: values.username,
+        password: values.password,
+      });
       navigation.replace('Home');
     } catch (error) {
       console.error('Signup error:', error);

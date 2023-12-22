@@ -1,9 +1,33 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../../asset/color/color';
 
-const Header: React.FC = ({children}: any) => {
-  return <View style={styles.header}>{children}</View>;
+interface HeaderProps {
+  children: React.ReactNode;
+  height: any;
+  borderBottomLeftRadius?: number;
+  borderBottomRightRadius?: number;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  children,
+  height,
+  borderBottomLeftRadius,
+  borderBottomRightRadius,
+}) => {
+  return (
+    <View
+      style={[
+        styles.header,
+        {
+          height: height,
+          borderBottomLeftRadius: borderBottomLeftRadius,
+          borderBottomRightRadius: borderBottomRightRadius,
+        },
+      ]}>
+      {children}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -11,9 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.dark_border,
     padding: 15,
     alignItems: 'center',
-    height: '34%',
-    borderBottomLeftRadius: 14,
-    borderBottomRightRadius: 14,
   },
 });
 
