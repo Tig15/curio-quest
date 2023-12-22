@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, Image, StyleSheet, Dimensions} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {COLORS} from '../../asset/color/color';
@@ -21,6 +21,10 @@ const SliderComponent: React.FC = () => {
     );
   };
 
+  const handleSnapToItem = useCallback((index: number) => {
+    setActiveSlide(index);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Carousel
@@ -29,6 +33,7 @@ const SliderComponent: React.FC = () => {
         sliderWidth={windowWidth}
         itemWidth={windowWidth}
         layout="default"
+        onSnapToItem={handleSnapToItem}
       />
       <Pagination
         dotsLength={images.length}
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: '90%',
     borderRadius: 12,
   },
   paginationContainer: {

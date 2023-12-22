@@ -13,7 +13,7 @@ import {COLORS} from '../../asset/color/color';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-const WelcomeScreen: React.FC = ({navigation}: {navigation: any}) => {
+const WelcomeScreen: React.FC = ({navigation}: any) => {
   const Skip = ({...props}) => (
     <TouchableOpacity style={styles.button} {...props}>
       <Text style={styles.buttonText}>Skip</Text>

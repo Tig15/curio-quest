@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713095249261",
+    "project_id": "curioquest-fcb35",
+    "storage_bucket": "curioquest-fcb35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713095249261:android:db4d46f7eeaa9116ef2e64",
+        "android_client_info": {
+          "package_name": "com.curioquest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713095249261-cssfc2c4j24gov7ppejvjq9db4ccmkdb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.curioquest",
+            "certificate_hash": "b25161b089686f586e8d9c24822a98560c764c83"
+          }
+        },
+        {
+          "client_id": "713095249261-5alqb9v178dv9c9ptsvi53djqggs9ejf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxaYLkqAluXsDq_zzZxWww1E_LPcc0OYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713095249261-5alqb9v178dv9c9ptsvi53djqggs9ejf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
