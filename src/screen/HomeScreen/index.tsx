@@ -9,9 +9,11 @@ const Home: React.FC = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <Header
-        height="6%"
-        borderBottomLeftRadius={12}
-        borderBottomRightRadius={12}>
+        style={{
+          height: '6%',
+          borderBottomLeftRadius: 12,
+          borderBottomRightRadius: 12,
+        }}>
         <Text style={styles.welcomeText}>{translate('welcome')}</Text>
       </Header>
       <View style={{height: '30%'}}>
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     color: COLORS.white,
+    marginLeft: 10,
   },
 });
 
