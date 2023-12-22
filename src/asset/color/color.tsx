@@ -14,4 +14,5 @@ export const COLORS = {
   logo_bg: '#dfc6ac',
   dark_myst: '#4392a4',
   light_myst: '#4aaebb',
+  auth_back: '#F2F1EB',
 };

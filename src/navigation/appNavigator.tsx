@@ -9,11 +9,24 @@ import {COLORS} from '../asset/color/color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SignupForm from '../screen/SignUp';
 import LoginForm from '../screen/Login';
+import {useEffect, useState} from 'react';
+import firebase from '@react-native-firebase/app';
+import MyAccount from '../components/MyAccount';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MyTabs = () => {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      setUserLoggedIn(!!user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -53,7 +66,10 @@ const MyTabs = () => {
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="MapScreen" component={MapScreen} />
       <Tab.Screen name="QuestList" component={QuestList} />
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+      <Tab.Screen
+        name="UserProfile"
+        component={userLoggedIn ? UserProfile : LoginForm || SignupForm}
+      />
     </Tab.Navigator>
   );
 };
@@ -79,6 +95,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="LogIn"
         component={LoginForm}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyAcc"
+        component={MyAccount}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

@@ -121,7 +121,7 @@ const SignupForm = ({navigation}: any) => {
                       <MaterialIcons
                         name={showPassword ? 'visibility' : 'visibility-off'}
                         size={24}
-                        color={COLORS.neutral}
+                        color={COLORS.secondary}
                       />
                     </TouchableOpacity>
                   </View>
@@ -140,11 +140,29 @@ const SignupForm = ({navigation}: any) => {
                 <TouchableOpacity
                   style={{marginTop: 12, alignSelf: 'center'}}
                   onPress={() => navigation.navigate('LogIn')}>
-                  <Text>{translate('already_have')}</Text>
+                  <Text style={{color: COLORS.secondary}}>
+                    {translate('already_have')}
+                  </Text>
                 </TouchableOpacity>
               </View>
             )}
           </Formik>
+          <TouchableOpacity
+            onPress={() => navigation.replace('Home')}
+            style={{
+              position: 'absolute',
+              top: 9,
+              right: 14,
+              borderWidth: 1,
+              borderColor: COLORS.dark_border,
+              width: 22,
+              height: 22,
+              borderRadius: 20,
+              paddingHorizontal: 2,
+              paddingVertical: 2,
+            }}>
+            <MaterialIcons name="close" size={16} color={COLORS.secondary} />
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
@@ -167,7 +185,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: COLORS.light_secondary,
+    backgroundColor: COLORS.auth_back,
     position: 'absolute',
     bottom: 0,
     width: windowWidth,

@@ -2,5 +2,15 @@
     "welcome": "Welcome to CurioQuest!",
     "not_account": "Don't Have any Account? Sign Up",
     "already_have": "Already have Account? Log In",
-    "adventure": "Embark on Your Adventure"
+    "adventure": "Embark on Your Adventure",
+    "good_to_have": "Good To Have You",
+    "my_account": "My Account",
+    "check_email": "Check Your Email",
+    "check_password": "Check Your Password",
+    "curr_password": "Current Password:",
+    "new_password": "New Password:",
+    "rewrite_password": "Rewrite Password:",
+    "entered_email": "Your Entered Email:",
+    "cannot_change": "This Email Cannot Change",
+    "log_out": "LogOut"
 }

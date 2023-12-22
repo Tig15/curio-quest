@@ -1,40 +1,21 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StyleProp, ViewStyle} from 'react-native';
 import {COLORS} from '../../asset/color/color';
 
 interface HeaderProps {
   children: React.ReactNode;
-  height: any;
-  borderBottomLeftRadius?: number;
-  borderBottomRightRadius?: number;
+  style?: StyleProp<ViewStyle>;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  children,
-  height,
-  borderBottomLeftRadius,
-  borderBottomRightRadius,
-}) => {
-  return (
-    <View
-      style={[
-        styles.header,
-        {
-          height: height,
-          borderBottomLeftRadius: borderBottomLeftRadius,
-          borderBottomRightRadius: borderBottomRightRadius,
-        },
-      ]}>
-      {children}
-    </View>
-  );
+const Header: React.FC<HeaderProps> = ({children, style}) => {
+  return <View style={[styles.header, style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.dark_border,
-    padding: 15,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
