@@ -4,7 +4,7 @@ import MapViews from '../../components/MapView';
 
 const MapScreen = () => {
   return (
-    <View>
+    <View style={{flex: 1}}>
       <MapViews />
     </View>
   );
