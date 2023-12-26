@@ -6,6 +6,7 @@ import AppNavigator from './navigation/appNavigator';
 import firebase from '@react-native-firebase/app';
 import firebaseConfig from './firebaseConfig';
 import {LogLevel, OneSignal} from 'react-native-onesignal';
+import SplashScreen from 'react-native-splash-screen';
 
 //appid:5fd43638-9717-4ee1-b5e8-6f720a677b36
 
@@ -17,16 +18,18 @@ if (!firebase.apps.length) {
 
 const App = () => {
   useEffect(() => {
-    const oneSignal_App_Id = '5fd43638-9717-4ee1-b5e8-6f720a677b36';
+    const ONESIGNAL_APP_ID = '5fd43638-9717-4ee1-b5e8-6f720a677b36';
     OneSignal.Debug.setLogLevel(LogLevel.Verbose);
 
-    OneSignal.initialize(oneSignal_App_Id);
+    OneSignal.initialize(ONESIGNAL_APP_ID);
 
     OneSignal.Notifications.requestPermission(true);
 
     OneSignal.Notifications.addEventListener('click', event => {
       console.log('OneSignal: notification clicked:', event);
     });
+
+    SplashScreen.hide();
   }, []);
 
   return (

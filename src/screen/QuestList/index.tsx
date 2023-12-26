@@ -3,7 +3,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import QuestDetails from '../../components/QuestDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../../components/Header';
-import {useFocusEffect} from '@react-navigation/native'; // Import the useFocusEffect hook
+import {useFocusEffect} from '@react-navigation/native';
 import {translate} from '../../translation';
 import {COLORS} from '../../asset/color/color';
 
