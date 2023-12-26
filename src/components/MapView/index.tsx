@@ -5,13 +5,13 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
+  Platform,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {request, PERMISSIONS, check} from 'react-native-permissions';
 import {COLORS} from '../../asset/color/color';
 import QuestModal from '../QuestModal';
-import {Platform} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 interface MarkerData {
@@ -21,8 +21,8 @@ interface MarkerData {
     quest: string;
     level: string;
     type: string;
-    reward: number;
-    timeLimit: number;
+    reward: string;
+    timeLimit: string;
     hints: string;
   };
 }
@@ -190,7 +190,6 @@ const MapViews = () => {
       }
 
       setQuestMarkers([...questMarkers, newQuestMarker]);
-
       setQuestModalVisible(false);
       setSelectedLocation(null);
     }
@@ -207,7 +206,7 @@ const MapViews = () => {
             latitudeDelta: 0.02,
             longitudeDelta: 0.02,
           }}
-          // showsUserLocation={true}
+          showsUserLocation={true}
           // followsUserLocation={true}
           onPress={handleQuestPress}>
           {userLocation && (
@@ -259,7 +258,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height * 0.94,
   },
 });
 

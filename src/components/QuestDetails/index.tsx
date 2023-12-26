@@ -6,31 +6,23 @@ import {COLORS} from '../../asset/color/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {translate} from '../../translation';
 
-interface QuestDetailsProps {
-  navigation: any;
+interface QuestDetailsProps {}
+
+interface cardData {
+  questDetail: {
+    quest: string;
+    level: string;
+    type: string;
+    reward: string;
+    timeLimit: string;
+    description: string;
+    hints: string;
+  };
 }
 
-interface QuestDetails {
-  quest: string;
-  level: string;
-  type: string;
-  description: string;
-  reward: number;
-  timeLimit: number;
-  hints: string;
-}
-
-const QuestDetails: React.FC<QuestDetailsProps> = ({navigation}) => {
+const QuestDetails: React.FC<QuestDetailsProps> = () => {
   const [placeName, setPlaceName] = useState('');
-  const [questDetails, setQuestDetails] = useState<QuestDetails>({
-    quest: '',
-    level: '',
-    type: '',
-    description: '',
-    reward: 0,
-    timeLimit: 0,
-    hints: '',
-  });
+  const [data, setData] = useState<cardData[]>([]);
   const [hintViewCount, setHintViewCount] = useState(0);
 
   useEffect(() => {
@@ -47,16 +39,18 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({navigation}) => {
       }
 
       if (questDetailsValue !== null) {
-        setQuestDetails(JSON.parse(questDetailsValue));
+        setData(JSON.parse(questDetailsValue));
       }
     } catch (error) {
       console.error('Error fetching details from AsyncStorage:', error);
     }
   };
 
+  const questDetail = data.length > 0 ? data[0].questDetail : null;
+
   const handleHintPress = () => {
     if (hintViewCount < 3) {
-      Alert.alert('Hint', questDetails.hints);
+      Alert.alert('Hint', questDetail?.hints);
       setHintViewCount(hintViewCount + 1);
     } else {
       Alert.alert('No More Hints', 'You have exhausted all hints.');
@@ -64,14 +58,18 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({navigation}) => {
   };
 
   const handleDelete = async () => {
-    await AsyncStorage.clear();
-    navigation.navigate('home');
+    try {
+      await AsyncStorage.removeItem('questDetails');
+      setData([]);
+    } catch (error) {
+      console.error('Error deleting quest details:', error);
+    }
   };
 
   return (
     <View style={styles.cardContainer}>
       <View style={styles.header}>
-        <Text style={styles.questTitle}>{questDetails.quest}</Text>
+        <Text style={styles.questTitle}>{questDetail?.quest}</Text>
         <View style={styles.icons}>
           <MaterialIcons
             name="add"
@@ -89,12 +87,61 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({navigation}) => {
       </View>
       <Text style={styles.placeName}>{placeName}</Text>
       <View style={styles.questDetails}>
-        <Text>{`${translate('level')}: ${questDetails.level}`}</Text>
-        <Text>{`${translate('type')}: ${questDetails.type}`}</Text>
-        <Text>{`${translate('reward')}: ${questDetails.reward}`}</Text>
-        <Text>{`${translate('time_limit')}: ${questDetails.timeLimit}`}</Text>
-        <Text>{`${translate('description')}: ${
-          questDetails.description
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            style={{
+              fontSize: 13,
+              color: COLORS.dark_myst,
+              fontWeight: 'bold',
+            }}>{`${translate('level')}: ${
+            questDetail?.level ? questDetail?.level : 'None'
+          }`}</Text>
+          <Text
+            style={{
+              fontSize: 13,
+              color: COLORS.info,
+              fontWeight: 'bold',
+            }}>{`${translate('type')}: ${
+            questDetail?.type ? questDetail?.type : 'None'
+          }`}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            marginTop: 4,
+            marginBottom: 4,
+          }}>
+          <Text
+            style={{
+              fontSize: 13,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}>{`${translate('reward')}: ${
+            questDetail?.reward ? questDetail?.reward : 'None'
+          }`}</Text>
+          <Text
+            style={{
+              fontSize: 13,
+              color: COLORS.danger,
+              fontWeight: 'bold',
+            }}>{`${translate('time_limit')}: ${
+            questDetail?.timeLimit ? questDetail?.timeLimit : 'None'
+          }`}</Text>
+        </View>
+        <Text
+          style={{
+            marginTop: 2,
+            fontSize: 15,
+            color: COLORS.dark_border,
+          }}>{`${translate('description')}: ${
+          questDetail?.description ? questDetail?.description : 'None'
         }`}</Text>
       </View>
       <View style={styles.hintButton}>

@@ -102,6 +102,21 @@ const AppNavigator = () => {
         component={MyAccount}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="QuestList"
+        component={QuestList}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
