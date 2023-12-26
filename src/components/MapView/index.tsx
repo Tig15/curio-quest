@@ -11,10 +11,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {request, PERMISSIONS, check} from 'react-native-permissions';
 import {COLORS} from '../../asset/color/color';
 import QuestModal from '../QuestModal';
+import {Platform} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
 interface MarkerData {
   id: string;
   coordinates: {latitude: number; longitude: number};
+  questDetail?: {
+    quest: string;
+    level: string;
+    type: string;
+    reward: number;
+    timeLimit: number;
+    hints: string;
+  };
 }
 
 const MapViews = () => {
@@ -24,8 +34,50 @@ const MapViews = () => {
     latitude: number;
     longitude: number;
   }>(null);
-  const [locationMarkers, setLocationMarkers] = useState<MarkerData[]>([]);
   const [questMarkers, setQuestMarkers] = useState<MarkerData[]>([]);
+  const [userLocation, setUserLocation] = useState<null | {
+    latitude: number;
+    longitude: number;
+  }>(null);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization();
+    }
+    Geolocation.getCurrentPosition(
+      position => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => console.log('Error getting user location:', error),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  }, []);
+
+  const fetchPlaceName = async (
+    latitude: number,
+    longitude: number,
+  ): Promise<string> => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch place name');
+      }
+
+      const data = await response.json();
+
+      const placeName = data.display_name;
+      return placeName;
+    } catch (error) {
+      console.error('Error fetching place name:', error);
+      return '';
+    }
+  };
 
   useEffect(() => {
     loadMarkersFromStorage();
@@ -33,16 +85,12 @@ const MapViews = () => {
 
   useEffect(() => {
     saveMarkersToStorage();
-  }, [locationMarkers, questMarkers]);
+  }, [questMarkers]);
 
   const loadMarkersFromStorage = async () => {
     try {
-      const locationData = await AsyncStorage.getItem('locationMarkers');
       const questData = await AsyncStorage.getItem('questMarkers');
 
-      if (locationData !== null) {
-        setLocationMarkers(JSON.parse(locationData));
-      }
       if (questData !== null) {
         setQuestMarkers(JSON.parse(questData));
       }
@@ -53,33 +101,40 @@ const MapViews = () => {
 
   const saveMarkersToStorage = async () => {
     try {
-      await AsyncStorage.setItem(
-        'locationMarkers',
-        JSON.stringify(locationMarkers),
-      );
       await AsyncStorage.setItem('questMarkers', JSON.stringify(questMarkers));
     } catch (error) {
       console.error('Error saving markers to AsyncStorage:', error);
     }
   };
 
-  const handleLocationPress = (event: any) => {
-    const {latitude, longitude} = event.nativeEvent.coordinate;
-    const newLocationMarker: MarkerData = {
-      id: `loc_${Date.now()}`,
-      coordinates: {latitude, longitude},
-    };
-    setLocationMarkers([...locationMarkers, newLocationMarker]);
-    setQuestModalVisible(true);
+  const savePlaceNameToStorage = async (placeName: string) => {
+    try {
+      await AsyncStorage.setItem('placeName', placeName);
+    } catch (error) {
+      console.error('Error saving place name to AsyncStorage:', error);
+    }
   };
 
-  const handleQuestPress = (event: any) => {
+  const handleQuestPress = async (event: any) => {
     const {latitude, longitude} = event.nativeEvent.coordinate;
     const newQuestMarker: MarkerData = {
       id: `quest_${Date.now()}`,
       coordinates: {latitude, longitude},
     };
+
+    try {
+      const placeName = await fetchPlaceName(latitude, longitude);
+      if (placeName) {
+        savePlaceNameToStorage(placeName);
+      } else {
+      }
+    } catch (error) {
+      console.error('Error fetching place name:', error);
+    }
+
     setQuestMarkers([...questMarkers, newQuestMarker]);
+    setSelectedLocation(newQuestMarker.coordinates);
+    setQuestModalVisible(true);
   };
 
   useEffect(() => {
@@ -98,66 +153,101 @@ const MapViews = () => {
     });
   }, []);
 
-  const handleSaveQuest = (details: any) => {
-    console.log('Quest details:', details);
+  const saveQuestDetailsToStorage = async (questDetails: MarkerData) => {
+    try {
+      const existingQuestDetails = await AsyncStorage.getItem('questDetails');
+      let parsedQuestDetails = existingQuestDetails
+        ? JSON.parse(existingQuestDetails)
+        : [];
 
-    const {quest, level, type} = details;
+      parsedQuestDetails.push(questDetails);
+      await AsyncStorage.setItem(
+        'questDetails',
+        JSON.stringify(parsedQuestDetails),
+      );
+    } catch (error) {
+      console.error('Error saving quest details to AsyncStorage:', error);
+    }
+  };
 
-    const {latitude, longitude} = selectedLocation || {};
+  const handleSaveQuest = async (details: any) => {
+    // console.log('Quest details:', details);
 
-    if (latitude !== undefined && longitude !== undefined) {
+    const {quest, level, type, reward, timeLimit, hints} = details;
+
+    if (selectedLocation) {
+      const {latitude, longitude} = selectedLocation;
       const newQuestMarker: MarkerData = {
         id: `quest_${Date.now()}`,
         coordinates: {latitude, longitude},
-        questDetail: {quest, level, type},
+        questDetail: {quest, level, type, reward, timeLimit, hints},
       };
 
+      try {
+        await saveQuestDetailsToStorage(newQuestMarker);
+      } catch (error) {
+        console.error('Error saving quest details to AsyncStorage:', error);
+      }
+
       setQuestMarkers([...questMarkers, newQuestMarker]);
+
+      setQuestModalVisible(false);
+      setSelectedLocation(null);
     }
   };
 
   return (
     <View style={styles.container}>
-      {mapReady && (
+      {mapReady && userLocation && (
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 40.7128,
-            longitude: -74.006,
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
             latitudeDelta: 0.02,
             longitudeDelta: 0.02,
           }}
-          showsUserLocation={true}
-          followsUserLocation={true}
-          onPress={handleLocationPress}>
-          {locationMarkers.map(marker => (
+          // showsUserLocation={true}
+          // followsUserLocation={true}
+          onPress={handleQuestPress}>
+          {userLocation && (
             <Marker
-              key={marker.id}
-              coordinate={marker.coordinates}
-              title="Location Marker"
+              coordinate={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+              }}
+              title="Current Location"
               pinColor="red"
             />
-          ))}
+          )}
           {questMarkers.map(marker => (
             <Marker
               key={marker.id}
               coordinate={marker.coordinates}
               title="Quest Marker"
               pinColor="blue"
+              onPress={() => setSelectedLocation(marker.coordinates)}
             />
           ))}
           {selectedLocation && (
-            <QuestModal
-              visible={questModalVisible}
-              onSave={handleSaveQuest}
-              onClose={() => setQuestModalVisible(false)}
+            <Marker
+              coordinate={selectedLocation}
+              title="Selected Location"
+              pinColor="green"
             />
           )}
         </MapView>
       )}
-      <TouchableOpacity style={styles.addButton} onPress={handleQuestPress}>
-        <Text style={{color: COLORS.white}}>Add Quest</Text>
-      </TouchableOpacity>
+      {questMarkers && (
+        <QuestModal
+          visible={questModalVisible}
+          onSave={handleSaveQuest}
+          onClose={() => {
+            setQuestModalVisible(false);
+            setSelectedLocation(null);
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -170,15 +260,6 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: 90,
-    alignSelf: 'center',
-    backgroundColor: COLORS.secondary,
-    padding: 10,
-    borderRadius: 5,
-    right: 20,
   },
 });
 

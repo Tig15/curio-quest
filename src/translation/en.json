@@ -12,5 +12,15 @@
     "rewrite_password": "Rewrite Password:",
     "entered_email": "Your Entered Email:",
     "cannot_change": "This Email Cannot Change",
-    "log_out": "LogOut"
+    "log_out": "LogOut",
+    "enter_quest": "Enter Quest Details:",
+    "save_quest": "Save Your Quest",
+    "cancel_quest": "Cancel Your Quest",
+    "requirements": "Requirements",
+    "time_limit": "Time Limit",
+    "reward": "Reward",
+    "level": "Level",
+    "type": "Type",
+    "description": "Description",
+    "quest_list": "Check Your Quest List"
 }

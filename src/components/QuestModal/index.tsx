@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {translate} from '../../translation';
+import {COLORS} from '../../asset/color/color';
 
 interface QuestModalProps {
   visible: boolean;
@@ -20,11 +22,22 @@ const QuestModal: React.FC<QuestModalProps> = ({visible, onSave, onClose}) => {
     level: '',
     type: '',
     description: '',
+    reward: '',
+    timeLimit: '',
+    hints: '',
   });
 
   const handleSave = () => {
     onSave(questDetails);
-    setQuestDetails({quest: '', level: '', type: '', description: ''});
+    setQuestDetails({
+      quest: '',
+      level: '',
+      type: '',
+      description: '',
+      reward: '',
+      timeLimit: '',
+      hints: '',
+    });
     onClose();
   };
 
@@ -32,7 +45,7 @@ const QuestModal: React.FC<QuestModalProps> = ({visible, onSave, onClose}) => {
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Enter Quest Details:</Text>
+          <Text style={styles.modalTitle}>{translate('enter_quest')}</Text>
           <TextInput
             placeholder="Quest Name"
             onChangeText={text =>
@@ -40,20 +53,28 @@ const QuestModal: React.FC<QuestModalProps> = ({visible, onSave, onClose}) => {
             }
             style={styles.input}
           />
-          <TextInput
-            placeholder="Level"
-            onChangeText={text =>
-              setQuestDetails({...questDetails, level: text})
-            }
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Type"
-            onChangeText={text =>
-              setQuestDetails({...questDetails, type: text})
-            }
-            style={styles.input}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <TextInput
+              placeholder="Level"
+              onChangeText={text =>
+                setQuestDetails({...questDetails, level: text})
+              }
+              style={styles.numInput}
+            />
+            <TextInput
+              placeholder="Type"
+              onChangeText={text =>
+                setQuestDetails({...questDetails, type: text})
+              }
+              style={styles.numInput}
+            />
+          </View>
+
           <TextInput
             placeholder="Description"
             onChangeText={text =>
@@ -62,12 +83,49 @@ const QuestModal: React.FC<QuestModalProps> = ({visible, onSave, onClose}) => {
             multiline={true}
             style={[styles.input, styles.descriptionInput]}
           />
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <TextInput
+              placeholder="Reward"
+              onChangeText={text =>
+                setQuestDetails({...questDetails, reward: text})
+              }
+              style={styles.numInput}
+              keyboardType="number-pad"
+            />
+            <TextInput
+              placeholder="Time Limit"
+              onChangeText={text =>
+                setQuestDetails({...questDetails, timeLimit: text})
+              }
+              style={styles.numInput}
+            />
+          </View>
+          <TextInput
+            placeholder="Hints"
+            onChangeText={text =>
+              setQuestDetails({...questDetails, hints: text})
+            }
+            multiline={true}
+            style={[styles.input, styles.hintInput]}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.buttonText}>{translate('save_quest')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+              <Text style={styles.buttonText}>{translate('cancel_quest')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -95,35 +153,48 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: 'lightgray',
+    borderColor: COLORS.light_border,
     borderRadius: 5,
     padding: 8,
     marginVertical: 5,
     width: '100%',
   },
+  numInput: {
+    borderWidth: 1,
+    borderColor: COLORS.light_border,
+    borderRadius: 5,
+    padding: 8,
+    marginVertical: 5,
+    width: '45%',
+  },
   descriptionInput: {
-    height: 100,
+    height: 80,
+    textAlignVertical: 'top',
+  },
+  hintInput: {
+    height: 40,
     textAlignVertical: 'top',
   },
   saveButton: {
-    backgroundColor: 'lightblue',
-    padding: 12,
+    backgroundColor: COLORS.light_myst,
+    padding: 4,
     marginVertical: 10,
     borderRadius: 5,
-    width: '100%',
+    width: '48%',
     alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: 'lightcoral',
-    padding: 12,
+    backgroundColor: COLORS.light_primary,
+    padding: 4,
+    marginVertical: 10,
     borderRadius: 5,
-    width: '100%',
+    width: '48%',
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: 'white',
+    color: COLORS.white,
   },
 });
 
