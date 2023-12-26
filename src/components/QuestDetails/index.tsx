@@ -99,7 +99,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = () => {
               color: COLORS.dark_myst,
               fontWeight: 'bold',
             }}>{`${translate('level')}: ${
-            questDetail?.level ? questDetail?.level : 'None'
+            questDetail?.level ? questDetail?.level : translate('none')
           }`}</Text>
           <Text
             style={{
@@ -107,7 +107,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = () => {
               color: COLORS.info,
               fontWeight: 'bold',
             }}>{`${translate('type')}: ${
-            questDetail?.type ? questDetail?.type : 'None'
+            questDetail?.type ? questDetail?.type : translate('none')
           }`}</Text>
         </View>
         <View
@@ -124,7 +124,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = () => {
               color: COLORS.primary,
               fontWeight: 'bold',
             }}>{`${translate('reward')}: ${
-            questDetail?.reward ? questDetail?.reward : 'None'
+            questDetail?.reward ? questDetail?.reward : translate('none')
           }`}</Text>
           <Text
             style={{
@@ -132,7 +132,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = () => {
               color: COLORS.danger,
               fontWeight: 'bold',
             }}>{`${translate('time_limit')}: ${
-            questDetail?.timeLimit ? questDetail?.timeLimit : 'None'
+            questDetail?.timeLimit ? questDetail?.timeLimit : translate('none')
           }`}</Text>
         </View>
         <Text
@@ -141,7 +141,9 @@ const QuestDetails: React.FC<QuestDetailsProps> = () => {
             fontSize: 15,
             color: COLORS.dark_border,
           }}>{`${translate('description')}: ${
-          questDetail?.description ? questDetail?.description : 'None'
+          questDetail?.description
+            ? questDetail?.description
+            : translate('none')
         }`}</Text>
       </View>
       <View style={styles.hintButton}>

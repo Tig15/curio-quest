@@ -22,5 +22,8 @@
     "level": "Level",
     "type": "Type",
     "description": "Description",
-    "quest_list": "Check Your Quest List"
+    "quest_list": "Check Your Quest List",
+    "none": "None",
+    "remove_quest_markers": "Remove Quest Markers",
+    "check_quest_markers": "Check Quest Markers"
 }
