@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import SliderComponent from '../../components/Slider';
 import {COLORS} from '../../asset/color/color';
@@ -8,7 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 
 const Home: React.FC = ({navigation}: any) => {
-  // useFocusEffect()
+  useFocusEffect(
+    useCallback(() => {
+      handleRemove();
+    }, []),
+  );
 
   const handleRemove = async () => {
     try {
